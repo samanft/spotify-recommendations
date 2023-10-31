@@ -199,6 +199,7 @@ function setupLogoutListener() {
   loginButton.removeEventListener('click', redirectToSpotifyAuthorizeEndpoint);
   loginButton.addEventListener('click', () => localStorage.clear());
   console.log('Log out listener set up');
+  enableAllButtons();
 }
 
 const args = new URLSearchParams(window.location.search);

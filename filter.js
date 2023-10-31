@@ -4,6 +4,16 @@ console.log(recommendations);
 const audio = new Audio(); // Create a single audio element
 
 const createPlaylistButton = document.getElementById('createPlaylistButton');
+const namePlaylist = document.getElementById('namePlaylist');
+let playlistName = null;
+
+namePlaylist.addEventListener('change', () => {
+    if (namePlaylist.value === '') {
+        playlistName = null;
+    } else {
+        playlistName = namePlaylist.value;
+    }
+})
 
 createPlaylistButton.addEventListener('click', () => {
     createPlaylistAndAddTracks(recommendedTrackURIs);
@@ -183,9 +193,11 @@ async function getRecommendations() {
 async function createPlaylistAndAddTracks(recommendedTrackURIs) {
     recommendedTrackURIs = recommendations.tracks.map(track => track.uri);
     const playlistData = await createPlaylist();
+    console.log(playlistData);
     playlistId = playlistData.id;
     await addTracksToPlaylist(playlistId, recommendedTrackURIs);
     console.log('Playlist created and tracks added successfully.');
+    window.location.href = playlistData.external_urls.spotify;
 }
 
 async function createPlaylist() {
@@ -196,12 +208,14 @@ async function createPlaylist() {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            name: 'Nah bc this playlist is so fire...',
+            name: playlistName || 'My SpotiRecs Playlist',
         }),
     });
 
     if (response.ok) {
-        return await response.json();
+        const jsonResponse = await response.json();
+        console.log(jsonResponse);
+        return jsonResponse;
     }
 }
 
