@@ -25,6 +25,7 @@ recommendations.tracks.forEach((track) => {
     const trackImage = document.createElement('img');
     const trackButton = document.createElement('button');
     const trackLength = document.createElement('p');
+    const trackCheckbox = document.createElement('input');
     const leftSide = document.createElement('div');
     const rightSide = document.createElement('div');
 
@@ -40,13 +41,17 @@ recommendations.tracks.forEach((track) => {
     trackButton.classList.add('btn', 'btn-success');
     trackButton.innerText = 'Preview';
     trackLength.innerHTML = `${Math.floor(track.duration_ms / 60000)}:${(track.duration_ms % 60000 / 1000).toFixed(0).padStart(2, '0')}`;
+    trackCheckbox.type = 'checkbox';
+    trackCheckbox.classList.add('form-check-input', 'ms-3');
+    trackCheckbox.checked = true;
 
     leftSide.appendChild(trackImage);
     leftSide.appendChild(trackName);
-    if (track.is_playable === true) {
+    if (track.preview_url !== null) {
         rightSide.appendChild(trackButton);
     }
     rightSide.appendChild(trackLength);
+    rightSide.appendChild(trackCheckbox);
 
     trackDiv.appendChild(leftSide);
     trackDiv.appendChild(rightSide);
@@ -310,18 +315,6 @@ function processTokenResponse(data) {
     console.log(access_token);
     getUser();
     setupLogoutListener();
-}
-
-function setupLogoutListener() {
-    loginButton.textContent = 'Log out';
-    loginButton.removeEventListener('click', redirectToSpotifyAuthorizeEndpoint);
-    loginButton.addEventListener('click', logout);
-    console.log('Log out listener set up');
-}
-
-function logout() {
-    localStorage.clear();
-    window.location.href = "google.com";
 }
 
 const args = new URLSearchParams(window.location.search);

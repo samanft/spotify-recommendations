@@ -23,7 +23,9 @@
         <a href="index.html" class="btn btn-success rounded-pill mx-2"
           >Go back</a
         >
-        <a class="btn btn-success rounded-pill mx-2" id="createPlaylistButton">Create playlist</a>
+        <a class="btn btn-success rounded-pill mx-2" id="createPlaylistButton"
+          >Create playlist</a
+        >
       </div>
       <input
         type="text"
@@ -32,7 +34,25 @@
         placeholder="Name your playlist!"
       />
 
-      <div class="tracks"></div>
+      <div class="tracks">
+        <div
+          class="track justify-content-between d-flex my-3"
+        >
+          <div></div>
+          <div class="p-3">
+            <label class="form-check-label" for="flexCheckChecked">
+              Select all
+            </label>
+            <input
+              class="form-check-input ms-3"
+              type="checkbox"
+              value=""
+              id="flexCheckChecked"
+              checked
+            />
+          </div>
+        </div>
+      </div>
     </div>
     <!-- <h1>Give me recommendations!</h1>
       <h3>Based on my listening habits from the past...</h3>
