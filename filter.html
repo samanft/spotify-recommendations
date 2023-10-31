@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Bootstrap demo</title>
+    <link rel="stylesheet" href="filter.css" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -12,52 +13,11 @@
     />
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg navbar-dark">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Dropdown
-              </a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                </li>
-              </ul>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-            </li>
-          </ul>
-          <form class="d-flex">
+        <img src="spotify-logo.webp" width="64px" class="navbar-brand" />
+        <div id="navbarSupportedContent">
+          <form>
             <button id="login-button" class="btn btn-outline-success">
               Log in with Spotify
             </button>
@@ -67,14 +27,18 @@
     </nav>
     <div class="container">
       <div class="navigationButtons d-flex justify-content-center my-5">
-        <a href="index.html" class="btn btn-success">Go back</a>
-        <a class="btn btn-success">Create playlist</a>
-        </div>
-
-        <div class="tracks">
-
-        </div>
+        <a href="index.html" class="btn btn-success rounded-pill mx-2"
+          >Go back</a
+        >
+        <a class="btn btn-success rounded-pill mx-2" id="createPlaylistButton">Create playlist</a>
       </div>
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Name your playlist!"
+      />
+
+      <div class="tracks"></div>
     </div>
     <!-- <h1>Give me recommendations!</h1>
       <h3>Based on my listening habits from the past...</h3>

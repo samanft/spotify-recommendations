@@ -1,266 +1,217 @@
-(function () {
-  const client_id = 'f377f138da0f425d81a343fdbbda63db';
-  const redirect_uri = 'http://127.0.0.1:5500/';
+const client_id = 'f377f138da0f425d81a343fdbbda63db';
+const redirect_uri = 'http://127.0.0.1:5500/';
 
-  let access_token = localStorage.getItem('access_token') || null;
-  let refresh_token = localStorage.getItem('refresh_token') || null;
-  let expires_at = localStorage.getItem('expires_at') || null;
-  let country = localStorage.getItem('country') || null;
-  let id = localStorage.getItem('id') || null;
+let access_token = localStorage.getItem('access_token') || null;
+let refresh_token = localStorage.getItem('refresh_token') || null;
+let expires_at = localStorage.getItem('expires_at') || null;
+let country = localStorage.getItem('country') || null;
+let id = localStorage.getItem('id') || null;
 
-  let playlistId = '';
-  let type = '';
-  let time_range = '';
-  let topArtistsOrTracks = [''];
-  let recommendedTrackURIs = [''];
+let playlistId = '';
+let type = '';
+let time_range = '';
+let topArtistsOrTracks = [''];
+let recommendedTrackURIs = [''];
 
-  const loginButton = document.getElementById('login-button');
-  const recommendationsButton = document.getElementById('recommendationsButton');
-  const topButtons = document.getElementsByClassName('topButton');
+const loginButton = document.getElementById('login-button');
+const recommendationsButton = document.getElementById('recommendationsButton');
+const topButtons = document.getElementsByClassName('topButton');
+const loginReminder = document.getElementById('loginReminder');
 
-  loginButton.addEventListener('click', redirectToSpotifyAuthorizeEndpoint);
-  recommendationsButton.addEventListener('click', getRecommendations);
+loginButton.addEventListener('click', redirectToSpotifyAuthorizeEndpoint);
+recommendationsButton.addEventListener('click', getRecommendations);
 
-  Array.from(topButtons).forEach((topButton) => {
-    topButton.addEventListener('click', () => {
-      handleTopButtonClick(topButton);
-    });
+Array.from(topButtons).forEach((topButton) => {
+  topButton.addEventListener('click', () => {
+    handleTopButtonClick(topButton);
+  });
+});
+
+// Check if the token has expired
+if (expires_at && Date.now() >= expires_at) {
+  // Token has expired, clear local storage
+  localStorage.clear();
+  access_token = null;
+  refresh_token = null;
+  expires_at = null;
+  country = null;
+  id = null;
+}
+
+async function handleTopButtonClick(topButton) {
+  const classList = topButton.classList;
+  console.log(topButton.textContent + ' button clicked');
+
+  if (classList.contains('short')) {
+    time_range = 'short_term';
+  } else if (classList.contains('medium')) {
+    time_range = 'medium_term';
+  } else if (classList.contains('long')) {
+    time_range = 'long_term';
+  } else {
+    console.log("Button clicked with no specific class");
+  }
+
+  if (classList.contains('tracks')) {
+    type = 'tracks';
+  } else if (classList.contains('artists')) {
+    type = 'artists';
+  } else {
+    console.log("Button clicked with no specific class");
+  }
+  await getRecommendations();
+  window.location.href = 'filter.html';
+}
+
+async function getUser() {
+  const response = await fetch(`https://api.spotify.com/v1/me`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${access_token}`,
+    },
   });
 
-  // Check if the token has expired
-  if (expires_at && Date.now() >= expires_at) {
-    // Token has expired, clear local storage
-    localStorage.clear();
-    access_token = null;
-    refresh_token = null;
-    expires_at = null;
-    country = null;
-    id = null;
+  if (response.ok) {
+    const data = await response.json();
+    country = data.country;
+    localStorage.setItem('country', country);
+    id = data.id;
+    localStorage.setItem('id', id);
+    console.log(id);
   }
+}
 
-  async function handleTopButtonClick(topButton) {
-    const classList = topButton.classList;
-    console.log(topButton.textContent + ' button clicked');
+async function getTopArtistsOrTracks() {
+  const response = await fetch(`https://api.spotify.com/v1/me/top/${type}?time_range=${time_range}&limit=5`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${access_token}`,
+    },
+  });
 
-    if (classList.contains('short')) {
-      time_range = 'short_term';
-    } else if (classList.contains('medium')) {
-      time_range = 'medium_term';
-    } else if (classList.contains('long')) {
-      time_range = 'long_term';
-    } else {
-      console.log("Button clicked with no specific class");
-    }
-
-    if (classList.contains('tracks')) {
-      type = 'tracks';
-    } else if (classList.contains('artists')) {
-      type = 'artists';
-    } else {
-      console.log("Button clicked with no specific class");
-    }
-    await getRecommendations();
-    window.location.href = 'filter.html';
+  if (response.ok) {
+    const data = await response.json();
+    topArtistsOrTracks = data.items.map((item) => item.id);
   }
+}
 
-  async function getUser() {
-    const response = await fetch(`https://api.spotify.com/v1/me`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
-    });
+async function getRecommendations() {
+  await getTopArtistsOrTracks();
+  const market = country;
+  const response = await fetch(`https://api.spotify.com/v1/recommendations?seed_${type}=${topArtistsOrTracks}&market=${market}&limit=100`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${access_token}`,
+    },
+  });
 
-    if (response.ok) {
-      const data = await response.json();
-      country = data.country;
-      localStorage.setItem('country', country);
-      id = data.id;
-      localStorage.setItem('id', id);
-      console.log(id);
-    }
-  }
-
-  async function getTopArtistsOrTracks() {
-    const response = await fetch(`https://api.spotify.com/v1/me/top/${type}?time_range=${time_range}&limit=5`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      topArtistsOrTracks = data.items.map((item) => item.id);
-    }
-  }
-
-  async function getRecommendations() {
-    await getTopArtistsOrTracks();
-    const market = country;
-    const response = await fetch(`https://api.spotify.com/v1/recommendations?seed_${type}=${topArtistsOrTracks}&market=${market}&limit=100`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      console.log(data);
-      localStorage.setItem('recommendations', JSON.stringify(data));
-      recommendedTrackURIs = data.tracks.map(track => track.uri);
-      // createPlaylistAndAddTracks(recommendedTrackURIs);
-    }
-  }
-
-  async function createPlaylistAndAddTracks(recommendedTrackURIs) {
-    const playlistData = await createPlaylist();
-    playlistId = playlistData.id;
-    await addTracksToPlaylist(playlistId, recommendedTrackURIs);
-    console.log('Playlist created and tracks added successfully.');
-    const iframe = createSpotifyIframe(playlistId);
-    document.querySelector('body').append(iframe);
-  }
-
-  async function createPlaylist() {
-    const response = await fetch(`https://api.spotify.com/v1/users/${id}/playlists`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: 'Nah bc this playlist is so fire...',
-      }),
-    });
-
-    if (response.ok) {
-      return await response.json();
-    }
-  }
-
-  async function addTracksToPlaylist(playlistId, recommendedTrackURIs) {
-    const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        uris: recommendedTrackURIs,
-      }),
-    });
-
-    if (!response.ok) {
-      console.error('Error:', response);
-    }
-  }
-
-  function createSpotifyIframe(playlistId) {
-    const iframe = document.createElement('iframe');
-    iframe.src = `https://open.spotify.com/embed/playlist/${playlistId}`;
-    iframe.frameBorder = '0';
-    iframe.allow = 'encrypted-media';
-    return iframe;
-  }
-
-  function generateRandomString(length) {
-    let text = '';
-    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < length; i++) {
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return text;
-  }
-
-  async function generateCodeChallenge(codeVerifier) {
-    const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(codeVerifier));
-    return btoa(String.fromCharCode(...new Uint8Array(digest)))
-      .replace(/=/g, '')
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_');
-  }
-
-  function generateUrlWithSearchParams(url, params) {
-    const urlObject = new URL(url);
-    urlObject.search = new URLSearchParams(params).toString();
-    return urlObject.toString();
-  }
-
-  function redirectToSpotifyAuthorizeEndpoint() {
-    const codeVerifier = generateRandomString(64);
-
-    generateCodeChallenge(codeVerifier).then((code_challenge) => {
-      window.localStorage.setItem('code_verifier', codeVerifier);
-      const queryParams = {
-        response_type: 'code',
-        client_id,
-        scope: 'user-top-read playlist-modify-public playlist-modify-private user-read-email user-read-private',
-        code_challenge_method: 'S256',
-        code_challenge,
-        redirect_uri,
-      };
-      window.location = generateUrlWithSearchParams('https://accounts.spotify.com/authorize', queryParams);
-    });
-  }
-
-  async function exchangeToken(code) {
-    const code_verifier = localStorage.getItem('code_verifier');
-    const response = await fetch('https://accounts.spotify.com/api/token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      },
-      body: new URLSearchParams({
-        client_id,
-        grant_type: 'authorization_code',
-        code,
-        redirect_uri,
-        code_verifier,
-      }),
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      processTokenResponse(data);
-      window.history.replaceState({}, document.title, '/');
-    }
-  }
-
-  function processTokenResponse(data) {
+  if (response.ok) {
+    const data = await response.json();
     console.log(data);
-    access_token = data.access_token;
-    refresh_token = data.refresh_token;
-    const t = new Date();
-    expires_at = t.setSeconds(t.getSeconds() + data.expires_in);
-    localStorage.setItem('access_token', access_token);
-    localStorage.setItem('refresh_token', refresh_token);
-    localStorage.setItem('expires_at', expires_at);
-    console.log(access_token);
-    getUser();
-    setupLogoutListener();
+    localStorage.setItem('recommendations', JSON.stringify(data));
+    recommendedTrackURIs = data.tracks.map(track => track.uri);
+    console.log(recommendedTrackURIs);
+    // createPlaylistAndAddTracks(recommendedTrackURIs);
   }
+}
 
-  function setupLogoutListener() {
-    loginButton.textContent = 'Log out';
-    loginButton.removeEventListener('click', redirectToSpotifyAuthorizeEndpoint);
-    loginButton.addEventListener('click', logout);
-    console.log('Log out listener set up');
+function generateRandomString(length) {
+  let text = '';
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  for (let i = 0; i < length; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
+  return text;
+}
 
-  function logout() {
-    localStorage.clear();
-    window.location.reload();
+async function generateCodeChallenge(codeVerifier) {
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(codeVerifier));
+  return btoa(String.fromCharCode(...new Uint8Array(digest)))
+    .replace(/=/g, '')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_');
+}
+
+function generateUrlWithSearchParams(url, params) {
+  const urlObject = new URL(url);
+  urlObject.search = new URLSearchParams(params).toString();
+  return urlObject.toString();
+}
+
+function redirectToSpotifyAuthorizeEndpoint() {
+  const codeVerifier = generateRandomString(64);
+
+  generateCodeChallenge(codeVerifier).then((code_challenge) => {
+    window.localStorage.setItem('code_verifier', codeVerifier);
+    const queryParams = {
+      response_type: 'code',
+      client_id,
+      scope: 'user-top-read playlist-modify-public playlist-modify-private user-read-email user-read-private',
+      code_challenge_method: 'S256',
+      code_challenge,
+      redirect_uri,
+    };
+    window.location = generateUrlWithSearchParams('https://accounts.spotify.com/authorize', queryParams);
+  });
+}
+
+async function exchangeToken(code) {
+  const code_verifier = localStorage.getItem('code_verifier');
+  const response = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+    },
+    body: new URLSearchParams({
+      client_id,
+      grant_type: 'authorization_code',
+      code,
+      redirect_uri,
+      code_verifier,
+    }),
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    processTokenResponse(data);
+    window.history.replaceState({}, document.title, '/');
   }
+}
 
-  const args = new URLSearchParams(window.location.search);
-  const code = args.get('code');
+function processTokenResponse(data) {
+  console.log(data);
+  access_token = data.access_token;
+  refresh_token = data.refresh_token;
+  const t = new Date();
+  expires_at = t.setSeconds(t.getSeconds() + data.expires_in);
+  localStorage.setItem('access_token', access_token);
+  localStorage.setItem('refresh_token', refresh_token);
+  localStorage.setItem('expires_at', expires_at);
+  console.log(access_token);
+  getUser();
+  setupLogoutListener();
+  enableAllButtons();
+}
 
-  if (code) {
-    exchangeToken(code);
-  } else if (access_token && refresh_token && expires_at) {
-    console.log('test124');
-    setupLogoutListener();
-  }
-})();
+function setupLogoutListener() {
+  loginButton.textContent = 'Log out';
+  loginReminder.innerText = "Give me recommendations! Based on..."
+  loginButton.removeEventListener('click', redirectToSpotifyAuthorizeEndpoint);
+  loginButton.addEventListener('click', () => localStorage.clear());
+  console.log('Log out listener set up');
+}
+
+const args = new URLSearchParams(window.location.search);
+const code = args.get('code');
+
+if (code) {
+  exchangeToken(code);
+} else if (access_token && refresh_token && expires_at) {
+  console.log('test124');
+  setupLogoutListener();
+}
+
+function enableAllButtons() {
+  const buttons = document.querySelectorAll('button');
+  buttons.forEach(button => button.disabled = false);
+}
