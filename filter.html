@@ -66,58 +66,13 @@
       </div>
     </nav>
     <div class="container">
-      <div class="d-flex flex-column align-items-center my-5">
-        <h1>Give me recommendations!</h1>
-        <h3>Based on...</h3>
-      </div>
-      <div>
-        <div class="row text-center">
-          <div class="col">
-            <button class="btn btn-success topButton artists short">
-              Top artists from last month
-            </button>
-          </div>
-          <div class="col">
-            <button class="btn btn-success topButton tracks short">
-              Top tracks from last month
-            </button>
-          </div>
+      <div class="navigationButtons d-flex justify-content-center my-5">
+        <a href="index.html" class="btn btn-success">Go back</a>
+        <a class="btn btn-success">Create playlist</a>
         </div>
-        <div class="row text-center">
-          <div class="col">
-            <button class="btn btn-success topButton artists medium">
-              Top artists from last 6 months
-            </button>
-          </div>
-          <div class="col">
-            <button class="btn btn-success topButton tracks medium">
-              Top tracks from last 6 months
-            </button>
-          </div>
-        </div>
-        <div class="row text-center">
-          <div class="col">
-            <button class="btn btn-success topButton artists long">
-              Top artists from last several years
-            </button>
-          </div>
-          <div class="col">
-            <button class="btn btn-success topButton tracks long">
-              Top tracks from last several years
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="input-group mb-3 mt-5">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Or pick up to 5 genres, seperated by commas"
-        />
-        <div class="input-group-append">
-          <button class="btn btn-success" id="recommendationsButton" type="button">
-            Recommend tracks
-          </button>
+
+        <div class="tracks">
+
         </div>
       </div>
     </div>
@@ -188,6 +143,6 @@
       integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
       crossorigin="anonymous"
     ></script>
-    <script src="script.js"></script>
+    <script src="filter.js"></script>
   </body>
 </html>
