@@ -6,6 +6,7 @@ let refresh_token = localStorage.getItem('refresh_token') || null;
 let expires_at = localStorage.getItem('expires_at') || null;
 let country = localStorage.getItem('country') || null;
 let id = localStorage.getItem('id') || null;
+localStorage.removeItem("recommendations");
 
 let playlistId = '';
 let type = '';
@@ -195,7 +196,7 @@ function processTokenResponse(data) {
 
 function setupLogoutListener() {
   loginButton.textContent = 'Log out';
-  loginReminder.innerText = "Give me recommendations! Based on..."
+  loginReminder.innerText = "Give me recommendations! Based on my..."
   loginButton.removeEventListener('click', redirectToSpotifyAuthorizeEndpoint);
   loginButton.addEventListener('click', () => localStorage.clear());
   console.log('Log out listener set up');

@@ -1,11 +1,37 @@
-const recommendations = JSON.parse(localStorage.getItem('recommendations'));
-console.log(recommendations);
+let recommendations = JSON.parse(localStorage.getItem('recommendations'));
 
+if (!recommendations) {
+    window.location.href = 'index.html';
+}
+console.log(recommendations);
+const ogRecs = recommendations;
+const errorMessage = document.getElementById('errorMessage');
 const audio = new Audio(); // Create a single audio element
 
 const createPlaylistButton = document.getElementById('createPlaylistButton');
 const namePlaylist = document.getElementById('namePlaylist');
 let playlistName = null;
+const selectAll = document.getElementById('selectAll');
+let recommendedTrackURIs = recommendations.tracks.map(track => track.uri);
+
+selectAll.addEventListener('click', () => {
+    const checkboxes = document.querySelectorAll('.form-check-input');
+    console.log('hallo')
+    if (selectAll.checked) {
+        checkboxes.forEach((checkbox) => {
+            checkbox.checked = true;
+            recommendedTrackURIs = recommendations.tracks.map(track => track.uri);
+            console.log(recommendedTrackURIs);
+        });
+    } else {
+        checkboxes.forEach((checkbox, index) => {
+            checkbox.checked = false;
+            recommendedTrackURIs[index] = null;;
+            console.log(recommendedTrackURIs)
+        });
+    }
+}
+);
 
 namePlaylist.addEventListener('change', () => {
     if (namePlaylist.value === '') {
@@ -16,10 +42,17 @@ namePlaylist.addEventListener('change', () => {
 })
 
 createPlaylistButton.addEventListener('click', () => {
-    createPlaylistAndAddTracks(recommendedTrackURIs);
+    const filteredTrackURIs = recommendedTrackURIs.filter(uri => uri !== null);
+    console.log(filteredTrackURIs);
+    if (filteredTrackURIs.length === 0) {
+        errorMessage.innerHTML = 'Please select at least one track.';
+        errorMessage.classList.add('text-danger', 'fw-semibold');
+    } else {
+        createPlaylistAndAddTracks(filteredTrackURIs);
+    }
 });
 
-recommendations.tracks.forEach((track) => {
+recommendations.tracks.forEach((track, index) => {
     const trackDiv = document.createElement('div');
     const trackName = document.createElement('p');
     const trackImage = document.createElement('img');
@@ -30,7 +63,7 @@ recommendations.tracks.forEach((track) => {
     const rightSide = document.createElement('div');
 
     trackDiv.classList.add('track');
-    trackName.classList.add('track-name');
+    trackName.classList.add('track-name', 'text-wrap');
     trackImage.classList.add('track-image');
     trackLength.classList.add('track-length');
     trackButton.classList.add('track-button');
@@ -42,7 +75,7 @@ recommendations.tracks.forEach((track) => {
     trackButton.innerText = 'Preview';
     trackLength.innerHTML = `${Math.floor(track.duration_ms / 60000)}:${(track.duration_ms % 60000 / 1000).toFixed(0).padStart(2, '0')}`;
     trackCheckbox.type = 'checkbox';
-    trackCheckbox.classList.add('form-check-input', 'ms-3');
+    trackCheckbox.classList.add('form-check-input', 'otherCheckBoxes', 'ms-3');
     trackCheckbox.checked = true;
 
     leftSide.appendChild(trackImage);
@@ -78,6 +111,24 @@ recommendations.tracks.forEach((track) => {
             audio.play();
         }
     });
+
+    // Add event listener to remove track from recommendations array if unchecked and re-add it if rechecked
+    trackCheckbox.addEventListener('click', () => {
+        if (!trackCheckbox.checked) {
+            console.log(index);
+            recommendedTrackURIs[index] = null;
+        } else {
+            console.log(index)
+            recommendedTrackURIs[index] = track.uri;
+        }
+        console.log(recommendedTrackURIs);
+
+        if (recommendedTrackURIs.length === recommendations.tracks.length) {
+            selectAll.checked = true;
+        } else {
+            selectAll.checked = false;
+        }
+    });
 });
 
 const client_id = 'f377f138da0f425d81a343fdbbda63db';
@@ -93,14 +144,9 @@ let playlistId = '';
 let type = '';
 let time_range = '';
 let topArtistsOrTracks = [''];
-let recommendedTrackURIs = [''];
 
-const loginButton = document.getElementById('login-button');
 const recommendationsButton = document.getElementById('recommendationsButton');
 const topButtons = document.getElementsByClassName('topButton');
-
-loginButton.addEventListener('click', redirectToSpotifyAuthorizeEndpoint);
-
 
 Array.from(topButtons).forEach((topButton) => {
     topButton.addEventListener('click', () => {
@@ -196,13 +242,13 @@ async function getRecommendations() {
 }
 
 async function createPlaylistAndAddTracks(recommendedTrackURIs) {
-    recommendedTrackURIs = recommendations.tracks.map(track => track.uri);
     const playlistData = await createPlaylist();
     console.log(playlistData);
     playlistId = playlistData.id;
     await addTracksToPlaylist(playlistId, recommendedTrackURIs);
     console.log('Playlist created and tracks added successfully.');
-    window.location.href = playlistData.external_urls.spotify;
+    console.log(recommendedTrackURIs);
+    // window.location.href = playlistData.external_urls.spotify;
 }
 
 async function createPlaylist() {
@@ -314,7 +360,6 @@ function processTokenResponse(data) {
     localStorage.setItem('expires_at', expires_at);
     console.log(access_token);
     getUser();
-    setupLogoutListener();
 }
 
 const args = new URLSearchParams(window.location.search);
@@ -324,5 +369,4 @@ if (code) {
     exchangeToken(code);
 } else if (access_token && refresh_token && expires_at) {
     console.log('test124');
-    setupLogoutListener();
 }

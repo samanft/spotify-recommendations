@@ -18,6 +18,12 @@
         <img src="spotify-logo.webp" width="64px" class="navbar-brand" />
       </div>
     </nav>
+
+    <div class="d-flex flex-column align-items-center">
+      <h2 class="display-2">Here are your recommendations!</h2>
+      <p class="lead" id="errorMessage">Now select which tracks you want to add to your playlist</p>
+    </div>
+
     <div class="container">
       <div class="navigationButtons d-flex justify-content-center my-5">
         <a href="index.html" class="btn btn-success rounded-pill mx-2"
@@ -31,22 +37,20 @@
         type="text"
         class="form-control"
         id="namePlaylist"
-        placeholder="Name your playlist!"
+        placeholder="Name your playlist"
       />
 
       <div class="tracks">
-        <div
-          class="track justify-content-between d-flex my-3"
-        >
+        <div class="track justify-content-between d-flex mt-5">
           <div></div>
           <div class="p-3">
             <label class="form-check-label" for="flexCheckChecked">
               Select all
             </label>
             <input
+              id="selectAll"
               class="form-check-input ms-3"
               type="checkbox"
-              value=""
               id="flexCheckChecked"
               checked
             />
