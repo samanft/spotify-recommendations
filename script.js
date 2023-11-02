@@ -15,12 +15,10 @@ let topArtistsOrTracks = [''];
 let recommendedTrackURIs = [''];
 
 const loginButton = document.getElementById('login-button');
-const recommendationsButton = document.getElementById('recommendationsButton');
 const topButtons = document.getElementsByClassName('topButton');
 const loginReminder = document.getElementById('loginReminder');
 
 loginButton.addEventListener('click', redirectToSpotifyAuthorizeEndpoint);
-recommendationsButton.addEventListener('click', getRecommendations);
 
 Array.from(topButtons).forEach((topButton) => {
   topButton.addEventListener('click', () => {
