@@ -1,6 +1,7 @@
 let recommendations = JSON.parse(sessionStorage.getItem('recommendations'));
+const accessToken = localStorage.getItem('access_token');
 
-if (!recommendations) {
+if (!recommendations || !accessToken) {
     window.location.href = 'index.html';
 }
 
