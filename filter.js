@@ -248,7 +248,7 @@ async function createPlaylistAndAddTracks(recommendedTrackURIs) {
     await addTracksToPlaylist(playlistId, recommendedTrackURIs);
     console.log('Playlist created and tracks added successfully.');
     console.log(recommendedTrackURIs);
-    // window.location.href = playlistData.external_urls.spotify;
+    window.location.href = playlistData.external_urls.spotify;
 }
 
 async function createPlaylist() {
