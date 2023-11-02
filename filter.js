@@ -3,7 +3,7 @@ let recommendations = JSON.parse(sessionStorage.getItem('recommendations'));
 if (!recommendations) {
     window.location.href = 'index.html';
 }
-console.log(recommendations);
+
 const ogRecs = recommendations;
 const errorMessage = document.getElementById('errorMessage');
 const audio = new Audio(); // Create a single audio element
@@ -16,18 +16,15 @@ let recommendedTrackURIs = recommendations.tracks.map(track => track.uri);
 
 selectAll.addEventListener('click', () => {
     const checkboxes = document.querySelectorAll('.form-check-input');
-    console.log('hallo')
     if (selectAll.checked) {
         checkboxes.forEach((checkbox) => {
             checkbox.checked = true;
             recommendedTrackURIs = recommendations.tracks.map(track => track.uri);
-            console.log(recommendedTrackURIs);
         });
     } else {
         checkboxes.forEach((checkbox, index) => {
             checkbox.checked = false;
-            recommendedTrackURIs[index] = null;;
-            console.log(recommendedTrackURIs)
+            recommendedTrackURIs[index] = null;
         });
     }
 }
@@ -43,7 +40,6 @@ namePlaylist.addEventListener('change', () => {
 
 createPlaylistButton.addEventListener('click', () => {
     const filteredTrackURIs = recommendedTrackURIs.filter(uri => uri !== null);
-    console.log(filteredTrackURIs);
     if (filteredTrackURIs.length === 0) {
         errorMessage.innerHTML = 'Please select at least one track.';
         errorMessage.classList.add('text-danger', 'fw-semibold');
@@ -115,15 +111,13 @@ recommendations.tracks.forEach((track, index) => {
     // Add event listener to remove track from recommendations array if unchecked and re-add it if rechecked
     trackCheckbox.addEventListener('click', () => {
         if (!trackCheckbox.checked) {
-            console.log(index);
             recommendedTrackURIs[index] = null;
         } else {
-            console.log(index)
             recommendedTrackURIs[index] = track.uri;
         }
-        console.log(recommendedTrackURIs);
+        console.log(recommendedTrackURIs.filter(uri => uri !== null).length);
 
-        if (recommendedTrackURIs.length === recommendations.tracks.length) {
+        if (recommendedTrackURIs.filter(uri => uri !== null).length === recommendations.tracks.length) {
             selectAll.checked = true;
         } else {
             selectAll.checked = false;
@@ -163,31 +157,6 @@ if (expires_at && Date.now() >= expires_at) {
     expires_at = null;
     country = null;
     id = null;
-}
-
-async function handleTopButtonClick(topButton) {
-    const classList = topButton.classList;
-    console.log(topButton.textContent + ' button clicked');
-
-    if (classList.contains('short')) {
-        time_range = 'short_term';
-    } else if (classList.contains('medium')) {
-        time_range = 'medium_term';
-    } else if (classList.contains('long')) {
-        time_range = 'long_term';
-    } else {
-        console.log("Button clicked with no specific class");
-    }
-
-    if (classList.contains('tracks')) {
-        type = 'tracks';
-    } else if (classList.contains('artists')) {
-        type = 'artists';
-    } else {
-        console.log("Button clicked with no specific class");
-    }
-    await getRecommendations();
-    window.location.href = 'filter.html';
 }
 
 async function getUser() {
@@ -368,5 +337,4 @@ const code = args.get('code');
 if (code) {
     exchangeToken(code);
 } else if (access_token && refresh_token && expires_at) {
-    console.log('test124');
 }
