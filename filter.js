@@ -1,4 +1,4 @@
-let recommendations = JSON.parse(localStorage.getItem('recommendations'));
+let recommendations = JSON.parse(sessionStorage.getItem('recommendations'));
 
 if (!recommendations) {
     window.location.href = 'index.html';

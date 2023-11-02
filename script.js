@@ -109,7 +109,7 @@ async function getRecommendations() {
   if (response.ok) {
     const data = await response.json();
     console.log(data);
-    localStorage.setItem('recommendations', JSON.stringify(data));
+    sessionStorage.setItem('recommendations', JSON.stringify(data));
     recommendedTrackURIs = data.tracks.map(track => track.uri);
     console.log(recommendedTrackURIs);
     // createPlaylistAndAddTracks(recommendedTrackURIs);
