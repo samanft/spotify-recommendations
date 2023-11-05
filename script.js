@@ -1,5 +1,5 @@
 const client_id = 'f377f138da0f425d81a343fdbbda63db';
-const redirect_uri = 'http://127.0.0.1:5500/';
+const redirect_uri = 'https://deft-kheer-59b818.netlify.app/';
 
 let access_token = localStorage.getItem('access_token') || null;
 let refresh_token = localStorage.getItem('refresh_token') || null;
