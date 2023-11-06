@@ -51,6 +51,8 @@ async function handleTopButtonClick(topButton) {
     console.log("Button clicked with no specific class");
   }
 
+  sessionStorage.setItem('time_range', time_range);
+
   if (classList.contains('tracks')) {
     type = 'tracks';
   } else if (classList.contains('artists')) {
@@ -58,8 +60,11 @@ async function handleTopButtonClick(topButton) {
   } else {
     console.log("Button clicked with no specific class");
   }
-  await getRecommendations();
-  window.location.href = 'filter.html';
+
+  sessionStorage.setItem('type', type);
+  
+  await getTopArtistsOrTracks();
+  window.location.href = 'parameters.html';
 }
 
 async function getUser() {
@@ -91,6 +96,8 @@ async function getTopArtistsOrTracks() {
   if (response.ok) {
     const data = await response.json();
     topArtistsOrTracks = data.items.map((item) => item.id);
+    console.log(topArtistsOrTracks);
+    localStorage.setItem('topArtistsOrTracks', JSON.stringify(topArtistsOrTracks));
   }
 }
 

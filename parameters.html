@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bootstrap demo</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container-fluid">
+        <img src="spotify-logo.webp" width="64px" class="navbar-brand" />
+      </div>
+    </nav>
+    <div class="container">
+      <div class="d-flex flex-column align-items-center">
+        <h2 class="display-2">Extra parameters</h2>
+        <p class="lead" id="errorMessage">
+          Remember that these are optional!
+        </p>
+      </div>
+      <div class="d-flex flex-column align-items-center">
+        <p class="lead mt-4">Energy level</p>
+        <div
+          class="btn-group"
+          role="group"
+          aria-label="Basic radio toggle button group"
+        >
+          <input
+            type="radio"
+            class="btn-check"
+            name="btnEnergy"
+            id="&target_energy=0"
+            autocomplete="off"
+          />
+          <label class="btn btn-outline-success" for="&target_energy=0">Low</label>
+
+          <input
+            type="radio"
+            class="btn-check"
+            name="btnEnergy"
+            id="&target_energy=0.5"
+            autocomplete="off"
+          />
+          <label class="btn btn-outline-success" for="&target_energy=0.5">Medium</label>
+
+          <input
+            type="radio"
+            class="btn-check"
+            name="btnEnergy"
+            id="&target_energy=1"
+            autocomplete="off"
+          />
+          <label class="btn btn-outline-success" for="&target_energy=1">High</label>
+        </div>
+
+        <p class="lead mt-4">Mood</p>
+        <div
+          class="btn-group"
+          role="group"
+          aria-label="Basic radio toggle button group"
+        >
+          <input
+            type="radio"
+            class="btn-check"
+            name="btnMood"
+            id="&target_valence=0"
+            autocomplete="off"
+          />
+          <label class="btn btn-outline-success" for="&target_valence=0"
+            >Negative</label
+          >
+
+          <input
+            type="radio"
+            class="btn-check"
+            name="btnMood"
+            id="&target_valence=0.5"
+            autocomplete="off"
+          />
+          <label class="btn btn-outline-success" for="&target_valence=0.5"
+            >Neutral</label
+          >
+
+          <input
+            type="radio"
+            class="btn-check"
+            name="btnMood"
+            id="&target_valence=1"
+            autocomplete="off"
+          />
+          <label class="btn btn-outline-success" for="&target_valence=1"
+            >Positive</label
+          >
+        </div>
+
+        <p class="lead mt-4">Popularity</p>
+        <div
+          class="btn-group"
+          role="group"
+          aria-label="Basic radio toggle button group"
+        >
+          <input
+            type="radio"
+            class="btn-check"
+            name="btnPopularity"
+            id="&target_popularity=0"
+            autocomplete="off"
+          />
+          <label class="btn btn-outline-success" for="&target_popularity=0"
+            >Obscure</label
+          >
+
+          <input
+            type="radio"
+            class="btn-check"
+            name="btnPopularity"
+            id="&target_popularity=0.5"
+            autocomplete="off"
+          />
+          <label class="btn btn-outline-success" for="&target_popularity=0.5">Niche</label>
+
+          <input
+            type="radio"
+            class="btn-check"
+            name="btnPopularity"
+            id="&target_popularity=1"
+            autocomplete="off"
+          />
+          <label class="btn btn-outline-success" for="&target_popularity=1"
+            >Mainstream</label
+          >
+        </div>
+      </div>
+      <div class="navigationButtons text-center my-5">
+        <a href="index.html" class="btn btn-success rounded-pill mx-2"
+          >Go back</a
+        >
+        <a class="btn btn-success rounded-pill mx-2" id="getRecommendationsBtn"
+          >Get recommendations</a
+        >
+      </div>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+    <script src="parameters.js"></script>
+  </body>
+</html>
