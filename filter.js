@@ -1,5 +1,6 @@
 let recommendations = JSON.parse(sessionStorage.getItem('recommendations'));
 const accessToken = localStorage.getItem('access_token');
+console.log(recommendations);
 
 if (!recommendations || !accessToken) {
     window.location.href = 'index.html';
@@ -72,8 +73,8 @@ recommendations.tracks.forEach((track, index) => {
     trackImage.setAttribute('width', '64px');
     trackName.innerHTML = `${track.name}`;
     artistName.innerHTML = `${track.artists[0].name}`;
-    trackButton.classList.add('btn', 'btn-success');
-    trackButton.innerText = 'Preview';
+    trackButton.classList.add('btn');
+    trackButton.innerHTML = '<i class="bi bi-play-fill"></i>';
     trackButton.id = `trackButton-${index}`; // Assign a unique ID to each trackButton
     trackLength.innerHTML = `${Math.floor(track.duration_ms / 60000)}:${(track.duration_ms % 60000 / 1000).toFixed(0).padStart(2, '0')}`;
     trackCheckbox.type = 'checkbox';
@@ -84,9 +85,7 @@ recommendations.tracks.forEach((track, index) => {
     artistInfo.appendChild(trackName);
     artistInfo.appendChild(artistName);
     leftSide.appendChild(artistInfo);
-    if (track.preview_url !== null) {
-        rightSide.appendChild(trackButton);
-    }
+    rightSide.appendChild(trackButton);
     rightSide.appendChild(trackLength);
     rightSide.appendChild(trackCheckbox);
 
@@ -122,16 +121,31 @@ let trackButtons = document.querySelectorAll('.track-button');
 trackButtons.forEach((trackButton, index) => {
     let track = recommendations.tracks[index];
 
+    // If track.preview_url is null, remove the trackButton from the DOM and return
+    if (track.preview_url === null) {
+        trackButton.remove();
+        return;
+    }
+
+
     trackButton.addEventListener('click', () => {
+        console.log(track.preview_url);
+        console.log(track);
         if (audio.src === track.preview_url) {
             if (!audio.paused) {
+                trackButton.innerHTML = '<i class="bi bi-play-fill"></i>';
                 audio.pause();
             } else {
+                trackButton.innerHTML = '<i class="bi bi-pause-fill"></i>';
                 audio.play();
             }
         } else {
+            trackButtons.forEach(trackButton => {
+                trackButton.innerHTML = '<i class="bi bi-play-fill"></i>';
+            });
             // If a different track is clicked, pause the current audio and play the new one
             audio.src = track.preview_url;
+            trackButton.innerHTML = '<i class="bi bi-pause-fill"></i>'; // Add this line
             audio.play();
         }
     });
