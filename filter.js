@@ -74,6 +74,7 @@ recommendations.tracks.forEach((track, index) => {
     artistName.innerHTML = `${track.artists[0].name}`;
     trackButton.classList.add('btn', 'btn-success');
     trackButton.innerText = 'Preview';
+    trackButton.id = `trackButton-${index}`; // Assign a unique ID to each trackButton
     trackLength.innerHTML = `${Math.floor(track.duration_ms / 60000)}:${(track.duration_ms % 60000 / 1000).toFixed(0).padStart(2, '0')}`;
     trackCheckbox.type = 'checkbox';
     trackCheckbox.classList.add('form-check-input', 'otherCheckBoxes', 'ms-3');
@@ -100,21 +101,6 @@ recommendations.tracks.forEach((track, index) => {
 
     document.querySelector('.tracks').appendChild(trackDiv);
 
-    // Add event listener to play track preview when button is clicked
-    trackButton.addEventListener('click', () => {
-        if (audio.src === track.preview_url) {
-            if (!audio.paused) {
-                audio.pause();
-            } else {
-                audio.play();
-            }
-        } else {
-            // If a different track is clicked, pause the current audio and play the new one
-            audio.src = track.preview_url;
-            audio.play();
-        }
-    });
-
     // Add event listener to remove track from recommendations array if unchecked and re-add it if rechecked
     trackCheckbox.addEventListener('click', () => {
         if (!trackCheckbox.checked) {
@@ -128,6 +114,25 @@ recommendations.tracks.forEach((track, index) => {
             selectAll.checked = true;
         } else {
             selectAll.checked = false;
+        }
+    });
+});
+
+let trackButtons = document.querySelectorAll('.track-button');
+trackButtons.forEach((trackButton, index) => {
+    let track = recommendations.tracks[index];
+
+    trackButton.addEventListener('click', () => {
+        if (audio.src === track.preview_url) {
+            if (!audio.paused) {
+                audio.pause();
+            } else {
+                audio.play();
+            }
+        } else {
+            // If a different track is clicked, pause the current audio and play the new one
+            audio.src = track.preview_url;
+            audio.play();
         }
     });
 });
