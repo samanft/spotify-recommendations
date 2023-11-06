@@ -52,22 +52,26 @@ createPlaylistButton.addEventListener('click', () => {
 recommendations.tracks.forEach((track, index) => {
     const trackDiv = document.createElement('div');
     const trackName = document.createElement('p');
+    const artistName = document.createElement('p');
     const trackImage = document.createElement('img');
     const trackButton = document.createElement('button');
     const trackLength = document.createElement('p');
     const trackCheckbox = document.createElement('input');
     const leftSide = document.createElement('div');
     const rightSide = document.createElement('div');
+    const artistInfo = document.createElement('div');
 
     trackDiv.classList.add('track');
     trackName.classList.add('track-name', 'text-wrap');
+    artistName.classList.add('artist-name', 'text-wrap', 'text-muted', 'small', 'mb-0');
     trackImage.classList.add('track-image');
     trackLength.classList.add('track-length');
     trackButton.classList.add('track-button');
 
     trackImage.src = track.album.images[0].url;
     trackImage.setAttribute('width', '64px');
-    trackName.innerHTML = `${track.artists[0].name} - ${track.name}`;
+    trackName.innerHTML = `${track.name}`;
+    artistName.innerHTML = `${track.artists[0].name}`;
     trackButton.classList.add('btn', 'btn-success');
     trackButton.innerText = 'Preview';
     trackLength.innerHTML = `${Math.floor(track.duration_ms / 60000)}:${(track.duration_ms % 60000 / 1000).toFixed(0).padStart(2, '0')}`;
@@ -76,7 +80,9 @@ recommendations.tracks.forEach((track, index) => {
     trackCheckbox.checked = true;
 
     leftSide.appendChild(trackImage);
-    leftSide.appendChild(trackName);
+    artistInfo.appendChild(trackName);
+    artistInfo.appendChild(artistName);
+    leftSide.appendChild(artistInfo);
     if (track.preview_url !== null) {
         rightSide.appendChild(trackButton);
     }
