@@ -117,7 +117,6 @@ async function getRecommendations() {
     sessionStorage.setItem('recommendations', JSON.stringify(data));
     recommendedTrackURIs = data.tracks.map(track => track.uri);
     console.log(recommendedTrackURIs);
-    // createPlaylistAndAddTracks(recommendedTrackURIs);
   }
 }
 
