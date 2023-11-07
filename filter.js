@@ -17,7 +17,7 @@ const selectAll = document.getElementById('selectAll');
 let recommendedTrackURIs = recommendations.tracks.map(track => track.uri);
 
 selectAll.addEventListener('click', () => {
-    const checkboxes = document.querySelectorAll('.form-check-input');
+    const checkboxes = document.querySelectorAll('.otherCheckBoxes');
     if (selectAll.checked) {
         checkboxes.forEach((checkbox) => {
             checkbox.checked = true;
@@ -78,7 +78,7 @@ recommendations.tracks.forEach((track, index) => {
     trackButton.id = `trackButton-${index}`; // Assign a unique ID to each trackButton
     trackLength.innerHTML = `${Math.floor(track.duration_ms / 60000)}:${(track.duration_ms % 60000 / 1000).toFixed(0).padStart(2, '0')}`;
     trackCheckbox.type = 'checkbox';
-    trackCheckbox.classList.add('form-check-input', 'otherCheckBoxes', 'ms-3');
+    trackCheckbox.classList.add('otherCheckBoxes', 'ms-3');
     trackCheckbox.checked = true;
 
     leftSide.appendChild(trackImage);
