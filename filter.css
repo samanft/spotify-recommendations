@@ -7,10 +7,26 @@
   color: springgreen; /* Change the color to your liking */
 }
 
-.form-check-input:not(:checked) + .checkbox-icon {
-  color: gray; /* Change the color to your liking */
+.checkbox-icon {
+  display: inline-block;
 }
 
-.form-check-input:not(:checked):hover + .checkbox-icon {
+.checkbox-icon {
+  transition: transform 0.1s ease;
+}
+
+.form-check-input:checked:hover + .checkbox-icon {
+  transform: scale(1.1);
+}
+
+.form-check-input:checked:active + .checkbox-icon {
+  color: grey;
+}
+
+.form-check-input:not(:checked) + .checkbox-icon {
+  color: darkgray; /* Change the color to your liking */
+}
+
+.form-check-input:not(:checked):not(:active):hover + .checkbox-icon {
   color: white; /* Change the color to your liking */
 }
