@@ -22,15 +22,20 @@ selectAll.addEventListener('click', () => {
         checkboxes.forEach((checkbox) => {
             checkbox.checked = true;
             recommendedTrackURIs = recommendations.tracks.map(track => track.uri);
+            let trackHeart = checkbox.nextElementSibling;
+            trackHeart.classList.remove('bi-heart');
+            trackHeart.classList.add('bi-heart-fill');
         });
     } else {
         checkboxes.forEach((checkbox, index) => {
             checkbox.checked = false;
             recommendedTrackURIs[index] = null;
+            let trackHeart = checkbox.nextElementSibling;
+            trackHeart.classList.remove('bi-heart-fill');
+            trackHeart.classList.add('bi-heart');
         });
     }
-}
-);
+});
 
 namePlaylist.addEventListener('change', () => {
     if (namePlaylist.value === '') {
@@ -61,7 +66,11 @@ recommendations.tracks.forEach((track, index) => {
     const leftSide = document.createElement('div');
     const rightSide = document.createElement('div');
     const artistInfo = document.createElement('div');
+    const trackHeart = document.createElement('i');
+    const label = document.createElement('label');
 
+    label.classList.add('form-check-label', 'ms-3');
+    trackHeart.classList.add('bi', 'bi-heart-fill', 'checkbox-icon');
     trackDiv.classList.add('track');
     trackName.classList.add('track-name', 'text-wrap');
     artistName.classList.add('artist-name', 'text-wrap', 'text-muted', 'small', 'mb-0');
@@ -78,7 +87,7 @@ recommendations.tracks.forEach((track, index) => {
     trackButton.id = `trackButton-${index}`; // Assign a unique ID to each trackButton
     trackLength.innerHTML = `${Math.floor(track.duration_ms / 60000)}:${(track.duration_ms % 60000 / 1000).toFixed(0).padStart(2, '0')}`;
     trackCheckbox.type = 'checkbox';
-    trackCheckbox.classList.add('otherCheckBoxes', 'ms-3');
+    trackCheckbox.classList.add('otherCheckBoxes', 'form-check-input', 'd-none');
     trackCheckbox.checked = true;
 
     leftSide.appendChild(trackImage);
@@ -87,7 +96,10 @@ recommendations.tracks.forEach((track, index) => {
     leftSide.appendChild(artistInfo);
     rightSide.appendChild(trackButton);
     rightSide.appendChild(trackLength);
-    rightSide.appendChild(trackCheckbox);
+    rightSide.appendChild(label);
+
+    label.appendChild(trackCheckbox);
+    label.appendChild(trackHeart);
 
     trackDiv.appendChild(leftSide);
     trackDiv.appendChild(rightSide);
@@ -96,9 +108,19 @@ recommendations.tracks.forEach((track, index) => {
     leftSide.classList.add('d-flex', 'align-items-center');
     rightSide.classList.add('d-flex', 'align-items-center');
     trackImage.classList.add('me-3');
-    trackLength.classList.add('ms-3');
+    trackLength.classList.add('ms-2');
 
     document.querySelector('.tracks').appendChild(trackDiv);
+
+    trackCheckbox.addEventListener('click', () => {
+        if (!trackCheckbox.checked) {
+            trackHeart.classList.remove('bi-heart-fill');
+            trackHeart.classList.add('bi-heart');
+        } else {
+            trackHeart.classList.remove('bi-heart');
+            trackHeart.classList.add('bi-heart-fill');
+        }
+    });
 
     // Add event listener to remove track from recommendations array if unchecked and re-add it if rechecked
     trackCheckbox.addEventListener('click', () => {

@@ -1,4 +1,16 @@
 .track-name,
 .track-length {
-    margin-bottom: 0;
+  margin-bottom: 0;
+}
+
+.form-check-input:checked + .checkbox-icon {
+  color: springgreen; /* Change the color to your liking */
+}
+
+.form-check-input:not(:checked) + .checkbox-icon {
+  color: gray; /* Change the color to your liking */
+}
+
+.form-check-input:not(:checked):hover + .checkbox-icon {
+  color: white; /* Change the color to your liking */
 }
