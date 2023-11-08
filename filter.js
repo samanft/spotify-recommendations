@@ -213,6 +213,20 @@ trackButtons.forEach((trackButton, index) => {
 
         // Append the cloned div to the body
         document.body.appendChild(trackDivClone);
+
+        const clonedTrackButton = trackDivClone.querySelector('.track-button');
+        clonedTrackButton.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play();
+                clonedTrackButton.innerHTML = '<i class="bi bi-pause-fill"></i>';
+                trackButton.innerHTML = '<i class="bi bi-pause-fill"></i>';
+            } else {
+                audio.pause();
+                clonedTrackButton.innerHTML = '<i class="bi bi-play-fill"></i>';
+                trackButton.innerHTML = '<i class="bi bi-play-fill"></i>';
+            }
+        });
+
     });
 });
 
