@@ -203,10 +203,10 @@ trackButtons.forEach((trackButton, index) => {
         trackDivClone.style.zIndex = '1000'; // Ensure it appears above other content
 
         // Remove any existing sticky track div
-        const existingStickyTrackDiv = document.querySelector('.sticky-track-div');
-        if (existingStickyTrackDiv) {
-            existingStickyTrackDiv.remove();
-        }
+        // const existingStickyTrackDiv = document.querySelector('.sticky-track-div');
+        // if (existingStickyTrackDiv) {
+        //     existingStickyTrackDiv.remove();
+        // }
 
         // Add a class to the cloned div for easy selection
         trackDivClone.classList.add('sticky-track-div');
@@ -225,6 +225,31 @@ trackButtons.forEach((trackButton, index) => {
                 clonedTrackButton.innerHTML = '<i class="bi bi-play-fill"></i>';
                 trackButton.innerHTML = '<i class="bi bi-play-fill"></i>';
             }
+        });
+
+        // Create progress bar and progress divs
+        const progressBar = document.createElement('div');
+        progressBar.classList.add('progress-bar', 'align-self-center');
+
+        const progress = document.createElement('div');
+        progress.className = 'progress';
+
+        // Append progress div to progress bar
+        progressBar.appendChild(progress);
+
+        // Append progress bar to cloned track div
+        trackDivClone.querySelector('div').parentNode.insertBefore(progressBar, trackDivClone.querySelector('div').nextSibling);
+
+        // Update progress bar on timeupdate event
+        audio.addEventListener('timeupdate', () => {
+            const progressPercent = (audio.currentTime / audio.duration) * 100;
+            progress.style.width = `${progressPercent}%`;
+        });
+
+        audio.addEventListener('timeupdate', () => {
+            const progressBar = trackDivClone.querySelector('.progress');
+            const progress = (audio.currentTime / audio.duration) * 100;
+            progressBar.style.width = `${progress}%`;
         });
 
     });

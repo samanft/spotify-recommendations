@@ -42,3 +42,21 @@
 .bi-play-fill:hover, .bi-pause-fill:hover {
   color: white;
 }
+
+.progress-bar {
+  width: 50% !important;
+  height: 5px;
+  background: gray !important;
+  vertical-align: middle;
+}
+
+.progress {
+  height: 5px;
+  --bs-progress-bg: lightgrey !important;
+  width: 0;
+  transition: width 0.5s linear;
+}
+
+.progress-bar:hover .progress {
+  --bs-progress-bg: springgreen !important;
+}
