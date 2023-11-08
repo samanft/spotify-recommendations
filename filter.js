@@ -173,29 +173,34 @@ trackButtons.forEach((trackButton, index) => {
             audio.play();
             audio.onended = () => {
                 trackButton.innerHTML = '<i class="bi bi-play-fill"></i>';
-                const trackDivClone = trackButton.parentNode.parentNode.cloneNode(true);
+                const trackDivClone = document.querySelector('.sticky-track-div');
+                const clonedButton = trackDivClone.querySelector('.track-button');
+                clonedButton.innerHTML = '<i class="bi bi-play-fill"></i>';
+                // const trackDivClone = trackButton.parentNode.parentNode.cloneNode(true);
+                // trackDivClone.classList.remove('my-3');
 
-                // Add styles to make it sticky at the bottom of the screen
-                trackDivClone.style.position = 'sticky';
-                trackDivClone.style.bottom = '0';
-                trackDivClone.style.zIndex = '1000'; // Ensure it appears above other content
+                // // Add styles to make it sticky at the bottom of the screen
+                // trackDivClone.style.position = 'fixed';
+                // trackDivClone.style.bottom = '0';
+                // trackDivClone.style.zIndex = '1000'; // Ensure it appears above other content
 
-                // Remove any existing sticky track div
-                const existingStickyTrackDiv = document.querySelector('.sticky-track-div');
-                if (existingStickyTrackDiv) {
-                    existingStickyTrackDiv.remove();
-                }
+                // // Remove any existing sticky track div
+                // const existingStickyTrackDiv = document.querySelector('.sticky-track-div');
+                // if (existingStickyTrackDiv) {
+                //     existingStickyTrackDiv.remove();
+                // }
 
-                // Add a class to the cloned div for easy selection
-                trackDivClone.classList.add('sticky-track-div');
+                // // Add a class to the cloned div for easy selection
+                // trackDivClone.classList.add('sticky-track-div');
 
-                // Append the cloned div to the body
-                document.body.appendChild(trackDivClone); F
+                // // Append the cloned div to the body
+                // document.body.appendChild(trackDivClone);
             }
         }
 
         // Clone the parent track div
         const trackDivClone = trackButton.parentNode.parentNode.cloneNode(true);
+        trackDivClone.classList.remove('my-3');
 
         // Add styles to make it sticky at the bottom of the screen
         trackDivClone.style.position = 'sticky';
@@ -203,10 +208,10 @@ trackButtons.forEach((trackButton, index) => {
         trackDivClone.style.zIndex = '1000'; // Ensure it appears above other content
 
         // Remove any existing sticky track div
-        // const existingStickyTrackDiv = document.querySelector('.sticky-track-div');
-        // if (existingStickyTrackDiv) {
-        //     existingStickyTrackDiv.remove();
-        // }
+        const existingStickyTrackDiv = document.querySelector('.sticky-track-div');
+        if (existingStickyTrackDiv) {
+            existingStickyTrackDiv.remove();
+        }
 
         // Add a class to the cloned div for easy selection
         trackDivClone.classList.add('sticky-track-div');
@@ -222,6 +227,11 @@ trackButtons.forEach((trackButton, index) => {
                 trackButton.innerHTML = '<i class="bi bi-pause-fill"></i>';
             } else {
                 audio.pause();
+                clonedTrackButton.innerHTML = '<i class="bi bi-play-fill"></i>';
+                trackButton.innerHTML = '<i class="bi bi-play-fill"></i>';
+            }
+
+            audio.onended = () => {
                 clonedTrackButton.innerHTML = '<i class="bi bi-play-fill"></i>';
                 trackButton.innerHTML = '<i class="bi bi-play-fill"></i>';
             }
