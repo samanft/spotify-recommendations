@@ -30,3 +30,15 @@
 .form-check-input:not(:checked):not(:active):hover + .checkbox-icon {
   color: white; /* Change the color to your liking */
 }
+
+.track-button {
+  transform: scale(1.2);
+}
+
+.bi-play-fill, .bi-pause-fill {
+  color: lightgrey;
+}
+
+.bi-play-fill:hover, .bi-pause-fill:hover {
+  color: white;
+}

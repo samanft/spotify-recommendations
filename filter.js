@@ -173,6 +173,24 @@ trackButtons.forEach((trackButton, index) => {
             audio.play();
             audio.onended = () => {
                 trackButton.innerHTML = '<i class="bi bi-play-fill"></i>';
+                const trackDivClone = trackButton.parentNode.parentNode.cloneNode(true);
+
+                // Add styles to make it sticky at the bottom of the screen
+                trackDivClone.style.position = 'sticky';
+                trackDivClone.style.bottom = '0';
+                trackDivClone.style.zIndex = '1000'; // Ensure it appears above other content
+
+                // Remove any existing sticky track div
+                const existingStickyTrackDiv = document.querySelector('.sticky-track-div');
+                if (existingStickyTrackDiv) {
+                    existingStickyTrackDiv.remove();
+                }
+
+                // Add a class to the cloned div for easy selection
+                trackDivClone.classList.add('sticky-track-div');
+
+                // Append the cloned div to the body
+                document.body.appendChild(trackDivClone); F
             }
         }
 
