@@ -8,7 +8,7 @@ if (!recommendations || !accessToken) {
 
 const ogRecs = recommendations;
 const errorMessage = document.getElementById('errorMessage');
-const audio = new Audio(); // Create a single audio element
+const audio = new Audio(); 
 
 const createPlaylistButton = document.getElementById('createPlaylistButton');
 const namePlaylist = document.getElementById('namePlaylist');
@@ -84,7 +84,7 @@ recommendations.tracks.forEach((track, index) => {
     artistName.innerHTML = `${track.artists[0].name}`;
     trackButton.classList.add('btn');
     trackButton.innerHTML = '<i class="bi bi-play-fill"></i>';
-    trackButton.id = `trackButton-${index}`; // Assign a unique ID to each trackButton
+    trackButton.id = `trackButton-${index}`; 
     trackLength.innerHTML = `${Math.floor(track.duration_ms / 60000)}:${(track.duration_ms % 60000 / 1000).toFixed(0).padStart(2, '0')}`;
     trackCheckbox.type = 'checkbox';
     trackCheckbox.classList.add('otherCheckBoxes', 'form-check-input', 'd-none');
@@ -122,7 +122,7 @@ recommendations.tracks.forEach((track, index) => {
         }
     });
 
-    // Add event listener to remove track from recommendations array if unchecked and re-add it if rechecked
+    
     trackCheckbox.addEventListener('click', () => {
         if (!trackCheckbox.checked) {
             recommendedTrackURIs[index] = null;
@@ -143,7 +143,7 @@ let trackButtons = document.querySelectorAll('.track-button');
 trackButtons.forEach((trackButton, index) => {
     let track = recommendations.tracks[index];
 
-    // If track.preview_url is null, remove the trackButton from the DOM and return
+    
     if (track.preview_url === null) {
         trackButton.remove();
         return;
@@ -167,9 +167,9 @@ trackButtons.forEach((trackButton, index) => {
             trackButtons.forEach(trackButton => {
                 trackButton.innerHTML = '<i class="bi bi-play-fill"></i>';
             });
-            // If a different track is clicked, pause the current audio and play the new one
+            
             audio.src = track.preview_url;
-            trackButton.innerHTML = '<i class="bi bi-pause-fill"></i>'; // Add this line
+            trackButton.innerHTML = '<i class="bi bi-pause-fill"></i>';
             audio.play();
             audio.onended = () => {
                 trackButton.innerHTML = '<i class="bi bi-play-fill"></i>';
@@ -198,25 +198,25 @@ trackButtons.forEach((trackButton, index) => {
             }
         }
 
-        // Clone the parent track div
+        
         const trackDivClone = trackButton.parentNode.parentNode.cloneNode(true);
         trackDivClone.classList.remove('my-3');
 
-        // Add styles to make it sticky at the bottom of the screen
+        
         trackDivClone.style.position = 'sticky';
         trackDivClone.style.bottom = '0';
-        trackDivClone.style.zIndex = '1000'; // Ensure it appears above other content
+        trackDivClone.style.zIndex = '1000'; 
 
-        // Remove any existing sticky track div
+       
         const existingStickyTrackDiv = document.querySelector('.sticky-track-div');
         if (existingStickyTrackDiv) {
             existingStickyTrackDiv.remove();
         }
 
-        // Add a class to the cloned div for easy selection
+        
         trackDivClone.classList.add('sticky-track-div');
 
-        // Append the cloned div to the body
+        
         document.body.appendChild(trackDivClone);
 
         const clonedTrackButton = trackDivClone.querySelector('.track-button');
@@ -237,20 +237,20 @@ trackButtons.forEach((trackButton, index) => {
             }
         });
 
-        // Create progress bar and progress divs
+        
         const progressBar = document.createElement('div');
         progressBar.classList.add('progress-bar', 'align-self-center');
 
         const progress = document.createElement('div');
         progress.className = 'progress';
 
-        // Append progress div to progress bar
+       
         progressBar.appendChild(progress);
 
-        // Append progress bar to cloned track div
+        
         trackDivClone.querySelector('div').parentNode.insertBefore(progressBar, trackDivClone.querySelector('div').nextSibling);
 
-        // Update progress bar on timeupdate event
+        
         audio.addEventListener('timeupdate', () => {
             const progressPercent = (audio.currentTime / audio.duration) * 100;
             progress.style.width = `${progressPercent}%`;
@@ -266,7 +266,7 @@ trackButtons.forEach((trackButton, index) => {
 });
 
 const client_id = 'f377f138da0f425d81a343fdbbda63db';
-const redirect_uri = 'http://127.0.0.1:5500/';
+const redirect_uri = 'http://127.0.0.1:5173/';
 
 let access_token = localStorage.getItem('access_token') || null;
 let refresh_token = localStorage.getItem('refresh_token') || null;
@@ -288,9 +288,9 @@ Array.from(topButtons).forEach((topButton) => {
     });
 });
 
-// Check if the token has expired
+
 if (expires_at && Date.now() >= expires_at) {
-    // Token has expired, clear local storage
+    
     localStorage.clear();
     access_token = null;
     refresh_token = null;
