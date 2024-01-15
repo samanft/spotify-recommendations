@@ -26,4 +26,4 @@ Spotify Recs is a web application that provides music recommendations based on a
 
 Here's a short preview of how the application works:
 
-![Application Preview](https://shorturl.at/bnwI1)
+![Application Preview](https://github.com/samanft/spotify-recommendations/assets/25375434/4068ac98-2272-4ba3-a5ce-5a4ce748c7b2)
