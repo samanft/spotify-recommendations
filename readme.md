@@ -6,7 +6,7 @@ Spotify Recs is a web application that provides music recommendations based on a
 
 ## Features
 
-- Log in with your Spotify 
+- Log in with your Spotify
 - Get music recommendations based on your top artists and tracks from last month
 - Preview your recommendations directly on the website
 - Select your favorite recommendations and the application will generate a playlist for you!
@@ -26,4 +26,4 @@ Spotify Recs is a web application that provides music recommendations based on a
 
 Here's a short preview of how the application works:
 
-![Application Preview](previewVideo.mp4)
+![Application Preview](https://cdn.discordapp.com/attachments/290381056694157322/1196382537405173800/previewVideo.mp4?ex=65b76d10&is=65a4f810&hm=d39b9adcca48b41fc7c5c09a47661fd5a9a5998f733eb0f815a98f417afc150d&)
