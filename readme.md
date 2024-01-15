@@ -21,3 +21,9 @@ Spotify Recs is a web application that provides music recommendations based on a
 
 1. Visit the live application at [https://deft-kheer-59b818.netlify.app/](https://deft-kheer-59b818.netlify.app/)
 2. Alternatively, clone the repository to your local machine and open the `index.html` file in your browser.
+
+## Preview
+
+Here's a short preview of how the application works:
+
+![Application Preview](previewVideo.mp4)
