@@ -41,7 +41,13 @@ let topArtistsOrTracks = JSON.parse(localStorage.getItem('topArtistsOrTracks')) 
 console.log(topArtistsOrTracks.length);
 // if topartisortracks is an empty array
 if (topArtistsOrTracks.length === 0) {
-    topArtistsOrTracks = ["66CXWjxzNUsdJxJ2JdwvnR"];
+    topArtistsOrTracks = [
+        "50fNLNo7AVm7hd7NtnMCvT",
+        "6uTPdRrEDeH8Fyg5L5qmeU",
+        "5nOkdY5ympdJmdIRgM4La7",
+        "2d5MTiTdGWFM0NYgHDnz5g",
+        "1zUnplQSkIUUFj6pJf8WQO"
+    ];
 }
 
 async function getRecommendations() {
