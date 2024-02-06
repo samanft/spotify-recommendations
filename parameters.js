@@ -37,7 +37,7 @@ const type = sessionStorage.getItem('type') || null;
 const country = localStorage.getItem('country') || null;
 const access_token = localStorage.getItem('access_token') || null;
 console.log(JSON.parse(localStorage.getItem('topArtistsOrTracks')));
-const topArtistsOrTracks = JSON.parse(localStorage.getItem('topArtistsOrTracks')) || null;
+let topArtistsOrTracks = JSON.parse(localStorage.getItem('topArtistsOrTracks')) || null;
 console.log(topArtistsOrTracks.length);
 // if topartisortracks is an empty array
 if (topArtistsOrTracks.length === 0) {
